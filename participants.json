@@ -1,0 +1,12 @@
+[
+	{
+		"name": "Wumpus",
+		"type": "discord",
+		"auth": {}
+	},
+	{
+		"name": "Chungus",
+		"type": "irc",
+		"auth": {}
+	}
+]
