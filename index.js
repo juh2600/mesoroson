@@ -30,12 +30,12 @@ for(var p in participants_config) {
 	switch(p.type) {
 		case 'discord': 
 			logger.info('Constructing DiscordClient: '+p.name);
-			participants[p.name] = (new DiscordClient(p.name, p.auth)).result;
+			participants[p.name] = (new DiscordClient(p.name, p.auth));
 			logger.info('Constructed '+p.name);
 			break;
 		case 'irc':
 			logger.info('Ignoring request for IRC client [TODO]');
-			participants[p.name] = (new NullClient(p.name)).result;
+			participants[p.name] = (new NullClient(p.name));
 			logger.info('Constructed null client for '+p.name);
 			break;
 		default: break;

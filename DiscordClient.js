@@ -4,16 +4,16 @@ const Participant = require('./Participant');
 const UMessage = require('./UMessage');
 const Discord = require('discord.io');
 
-class DiscordClient {
+class DiscordClient extends Participant {
 	constructor(name, auth) {
-		this.result = new Participant(
+		super(
 			name,
 			'discord',
 			new Discord.Client({token: auth.token, autorun: true}),
 			function(msg){
 				// This function must take in a UMessage from a Community and send it to all its endpoints (in the direction of users, not Communities).
 				this.logger.debug(JSON.stringify(msg,null,'\t'))
-				// Array of objects containing a "channel" and a "server"
+				// Array of objects containing a "channel" (id, string) and a "server" (object)
 				var destinations = this.getDestinations(msg.channel, msg.source);
 				for(var d in destinations) {
 					logger.info('Destination #'+d);
@@ -44,7 +44,7 @@ class DiscordClient {
 			},
 			{}
 		);
-		this.result.getDestinations = function(destName, source) {
+		this.getDestinations = function(destName, source) {
 			console.log('Destination: '+destName);
 			console.log('Source: '+JSON.stringify(source,null,'\t'));
 			console.log('         '+source.participant+' '+source.channel+' '); // FIXME
@@ -105,7 +105,7 @@ class DiscordClient {
 		 * The Discord client won't know what servers or channels it has access to until it's set up and connected and generally ready.
 		 * Once it is ready, we can populate the list of channels that we can see.
 		 */
-		this.result.mind.on('ready', function (evt) {
+		this.mind.on('ready', function (evt) {
 			// Within this function, `this` refers to the mind
 			this.parent.logger.info('Enrolling channels');
 			var channels = this.channels;
@@ -119,7 +119,7 @@ class DiscordClient {
 			this.parent.communities.forEach(c => c.reload());
 			this.parent.logger.info('Channels enrolled. Ready');
 		});
-		this.result.mind.on('message', function(user, user_id, channel_id, msg, event) {
+		this.mind.on('message', function(user, user_id, channel_id, msg, event) {
 			// Within this function, the keyword `this` refers to the mind.
 			// ignore our own messages
 			if(user_id == auth.id) return;
