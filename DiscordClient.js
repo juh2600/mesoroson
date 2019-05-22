@@ -12,13 +12,12 @@ class DiscordClient extends Participant {
 			new Discord.Client({token: auth.token, autorun: true}),
 			function(msg){
 				// This function must take in a UMessage from a Community and send it to all its endpoints (in the direction of users, not Communities).
-				this.logger.debug(JSON.stringify(msg,null,'\t'))
 				// Array of objects containing a "channel" (id, string) and a "server" (object)
 				var destinations = this.getDestinations(msg.channel, msg.source);
 				for(var d in destinations) {
-					logger.info('Destination #'+d);
+					logger.debug('Destination #'+d);
 					d = destinations[d];
-					console.log(d);
+					logger.debug(d);
 					// Handle emoji :D
 					var emojis = d.server.emojis;
 					// Not sure what this is about tho
@@ -32,26 +31,25 @@ class DiscordClient extends Participant {
 						return whole;  // no match, so return plaintext unchanged
 					});
 
-					console.log(d.channel);
+					logger.debug(d.channel);
 					var discordMessage = {
 						to: d.channel,
 						message: '**' + msg.user.displayName + ':** ' + content
 					};
-					logger.info('Sending message: ');
-					console.log(discordMessage);
+					//logger.debug('Sending message: ');
+					//logger.debug(discordMessage); // uhhh prepends [Discord] to the actual message ¯\_(ツ)_/¯
 					this.mind.sendMessage(discordMessage);
 				}
 			},
 			{}
 		);
 		this.getDestinations = function(destName, source) {
-			console.log('Destination: '+destName);
-			console.log('Source: '+JSON.stringify(source,null,'\t'));
-			console.log('         '+source.participant+' '+source.channel+' '); // FIXME
+			logger.debug('Destination: '+destName);
+			logger.debug('Source: '+JSON.stringify(source,null,'\t'));
+			logger.debug('         '+source.participant+' '+source.channel+' '); // FIXME
 			var destinations = [];
-			console.log('Results:');
+			logger.debug('Results:');
 			var mind = this.mind; // screw scoping
-			var logger = this.logger;
 			var name = this.name;
 			// for each server
 			for(var s in this.mind.servers) {
@@ -121,7 +119,7 @@ class DiscordClient extends Participant {
 					channel_name,
 					line
 				);
-				console.log(JSON.stringify(message,null,'\t'));
+				logger.debug(JSON.stringify(message,null,'\t'));
 				this.parent.propagate(message);
 			});
 		});
