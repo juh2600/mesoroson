@@ -4,7 +4,7 @@
  * @constructor
  */
 class Community {
-	constructor() {
+	constructor(name, id) {
 		/**
 		 * Array containing the {@link Participant}s in this Community.
 		 */
