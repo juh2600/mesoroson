@@ -24,6 +24,10 @@ class Participant {
 		 */
 		this.name = name;
 		/**
+		 * Logger for this Participant to use.
+		 */
+		this.logger = require('./logger').get(name);
+		/**
 		 * String to identify the platform of this Participant (e.g., 'discord', 'irc').
 		 */
 		this.type = type;
@@ -34,9 +38,9 @@ class Participant {
 		/**
 		 * When in the Course of logic events, it becomes necessary for one object to dissolve the lexical scope which has isolated it from another, and to assume among the powers of the globe, the separate and equal station to which the Laws of Javascript and Javascript's Documentation entitle it, a decent respect to the opinions of developers requires that it should declare the causes which impel it to the elevation. Sometimes it's good to know the thing's parent.
 		 */
-		this.mind.parent = this;
+		if(this.mind != null) this.mind.parent = this;
 		/**
-		 * Method that takes a {@link UMessage} from a {@link Community} and sends it to wherever it needs to go.
+		 * Method that takes a {@link UMessage} from a {@link Community} and makes the appropriate calls on this.mind to send it to its destination here.
 		 */
 		this.distribute = distributor;
 		/**
@@ -49,7 +53,7 @@ class Participant {
 		 */
 		this.channels = [];
 		/**
-		 * Function to be called upon joining a community.
+		 * Function to be called upon joining a community. ~~One might consider calling `reload()` in here, if joining a community means this Participant needs to join more channels.~~ Just kidding, don't do that! Reloading on Community changes happens automatically; see {@link Community}.
 		 * @callback Participant~join_callback
 		 * @param {Community} community
 		 */
