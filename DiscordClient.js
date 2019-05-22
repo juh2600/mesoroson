@@ -61,15 +61,6 @@ class DiscordClient extends Participant {
 					function(channel_id) {
 						// if it's the source channel, nope out
 						if((name === source.participant) && (channel_id == source.channel)) return false;
-
-						// get channel object from the mind's channel list instead of the server's channel list
-						// maybe they're the same, iunno
-						/*
-						var channels_with_id = mind.channels.filter(c => c.id === channel_id);
-						if(channels_with_id.length < 1) return false;
-						if(channels_with_id.length > 1) logger.warn('Found '+channels_with_id.length+' channels with ID '+channel_id);
-						*/
-						// check the channel's name and return
 						return destName === mind.channels[channel_id].name;
 					}
 				);
@@ -78,27 +69,6 @@ class DiscordClient extends Participant {
 					destinations.push({server: s, channel: c});
 				}
 			}
-			/*
-			for(var c in this.mind.channels) {
-				c = this.mind.channels[c];
-				// if the channel has the right name and isn't the source channel
-				if(destName.split('#')[1] == c.name && (srcPart != this.name || srcChan != c.id)) {
-					console.log('Found channel: '+c.id+' '+c.name);
-					for(var s in this.mind.servers) {
-						s = this.mind.servers[s];
-						if(s.channels.hasOwnProperty(c.id))
-							console.log('Adding destination');
-							console.log('Length before: '+destinations.length);
-							destinations.push({
-								channel: c,
-								server: s
-							});
-							console.log('Length after: '+destinations.length);
-					}
-				}
-			}
-			*/
-			//console.log(JSON.stringify(destinations,null,'\t'));
 			return destinations;
 		};
 		/**
