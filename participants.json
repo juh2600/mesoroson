@@ -2,7 +2,10 @@
 	{
 		"name": "Wumpus",
 		"type": "discord",
-		"auth": {}
+		"auth": {
+			"token": "your-long-ugly-token-here",
+			"id": "314159265358979324"
+		}
 	},
 	{
 		"name": "Chungus",
