@@ -5,19 +5,23 @@ class UMessage {
 	/**
 	 * Constructs the UMessage type.
 	 * @constructor
-	 * @param {string} source - Identifier of the source of this message, in the form <participant name>#<channel id or name>. Should uniquely identify the channel from which the message originated; this is used to prevent feedback.
+	 * @param {Object} source - Identifier of the source of this message, in the form {participant: string, channel: string}. Should uniquely identify the channel from which the message originated; this is used to prevent feedback.
 	 * @param {Object} user - Contains the displayName and realName of the user, as applicable.
-	 * @param {string} channel - Display name of the channel to which this message belongs, starting with a pound ('#').
+	 * @param {string} channel - Display name of the channel to which this message belongs. Does not start with '#' unless that's the first character in the channel name.
 	 * @param {string} content - Content of the message.
 	 * @return {UMessage} An object having this structure:
 	 * 	{
-	 * 		source: string,
+	 * 		source:
+	 * 			{
+	 * 				participant: string,
+	 * 				channel: string (channel ID where available)
+	 * 			},
 	 * 		user:
 	 * 			{
 	 * 				displayName: string,
 	 * 				realName: string
 	 * 			},
-	 * 		channel: string matching /^#/,
+	 * 		channel: string,
 	 * 		content: string
 	 *	}
 	 */
