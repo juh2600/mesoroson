@@ -96,10 +96,17 @@ class DiscordClient extends Participant {
 
 			// UMessage expects a channel name, not prefixed with '#'
 			var channel_name = this.channels[channel_id].name;
+			var content = event.d.content;
+
+			// Strip emoji reference garbage
+			var emoji_trash = /<:([a-zA-Z0-9_]{1,32}):[0-9]+>/g;
+			content = content.replace(emoji_trash,function(whole,name){
+				return ':' + name + ':';
+			});
 
 			// Some platforms don't support multi-line messages (e.g., IRC)
 			// Split the message at newlines
-			var lines = event.d.content.split('\n');
+			var lines = content.split('\n');
 			lines.forEach(line => {
 				event.d.content = line; // haha suck on that, pass by reference // i wonder what inspired that
 				var message = new UMessage(
