@@ -15,9 +15,9 @@ class DiscordClient extends Participant {
 				// Array of objects containing a "channel" (id, string) and a "server" (object)
 				var destinations = this.getDestinations(msg.channel, msg.source);
 				for(var d in destinations) {
-					logger.debug('Destination #'+d);
+					this.logger.debug('Destination #'+d);
 					d = destinations[d];
-					logger.debug(d);
+					this.logger.debug(d);
 					// Handle emoji :D
 					var emojis = d.server.emojis;
 					// Not sure what this is about tho
@@ -31,24 +31,32 @@ class DiscordClient extends Participant {
 						return whole;  // no match, so return plaintext unchanged
 					});
 
-					logger.debug(d.channel);
+					this.logger.debug(d.channel);
 					var discordMessage = {
 						to: d.channel,
-						message: '**' + msg.user.displayName + ':** ' + content
+						message: '**' + msg.user.realName + ':** ' + content
 					};
-					//logger.debug('Sending message: ');
-					//logger.debug(discordMessage); // uhhh prepends [Discord] to the actual message ¯\_(ツ)_/¯
+					//this.logger.debug('Sending message: ');
+					//this.logger.debug(discordMessage); // uhhh prepends [Discord] to the actual message ¯\_(ツ)_/¯
 					this.mind.sendMessage(discordMessage);
 				}
 			},
 			{}
 		);
+		this.mind.getServerFromChannel = function(channel_id) {
+			return this.servers[Object.keys(this.servers).filter(s => this.servers[s].channels.hasOwnProperty(channel_id))[0]];
+		}
+		this.mind.getNickFromServer = function(user_id, server_id) {
+			return this.servers[server_id].members[user_id].nick;
+		}
+		this.mind.getNickFromChannel = function(user_id, channel_id) {
+			return this.getNickFromServer(user_id, this.getServerFromChannel(channel_id).id);
+		}
 		this.getDestinations = function(destName, source) {
-			logger.debug('Destination: '+destName);
-			logger.debug('Source: '+JSON.stringify(source,null,'\t'));
-			logger.debug('         '+source.participant+' '+source.channel+' '); // FIXME
+			this.logger.debug('Destination: '+destName);
+			this.logger.debug('Source: '+JSON.stringify(source,null,'\t'));
 			var destinations = [];
-			logger.debug('Results:');
+			this.logger.debug('Results:');
 			var mind = this.mind; // screw scoping
 			var name = this.name;
 			// for each server
@@ -113,13 +121,13 @@ class DiscordClient extends Participant {
 						channel: channel_id
 					},
 					{
-						displayName: user,
+						displayName: this.getNickFromChannel(user_id, channel_id),
 						realName: user
 					},
 					channel_name,
 					line
 				);
-				logger.debug(JSON.stringify(message,null,'\t'));
+				this.parent.logger.debug(JSON.stringify(message,null,'\t'));
 				this.parent.propagate(message);
 			});
 		});
