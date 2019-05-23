@@ -9,6 +9,7 @@ class Community {
 		 * Array containing the {@link Participant}s in this Community.
 		 */
 		this.participants = [];
+		this.channels = [];
 		/**
 		 * Informs each {@link Participant} that it should reload its information about this Community.
 		 * The specific effects this has on a Participant are dependent on its platform.
