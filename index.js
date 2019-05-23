@@ -27,7 +27,7 @@ communities = {};
 logger.info('Initializing Participants...');
 for(var p in participants_config) {
 	p = participants_config[p];
-	console.log(p);
+	console.debug(p);
 	switch(p.type) {
 		case 'discord': 
 			logger.info('Constructing DiscordClient: '+p.name);
@@ -53,11 +53,11 @@ logger.info('Initialized Participants.');
 logger.info('Initializing Communities...');
 for(var c in communities_config) {
 	c = communities_config[c];
-	console.log(c);
+	console.debug(c);
 	communities[c.id] = new Community(c.name, c.id);
 	for(var p in c.members) {
 		p = c.members[p];
-		console.log(p);
+		console.debug(p);
 		communities[c.id].add(participants[p]);
 	}
 }

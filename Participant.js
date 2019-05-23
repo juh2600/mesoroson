@@ -75,7 +75,7 @@ class Participant {
 		 * @param {UMessage} message Message to be relayed to the rest of the world
 		 */
 		this.propagate = function(message) {
-			if(process.env.NODE_ENV == 'debug') console.log('Propagating message from ' + message.source);
+			if(process.env.NODE_ENV == 'debug') this.logger.debug('Propagating message from ' + message.source);
 			this.communities.forEach(c => c.distribute(message));
 		};
 	}

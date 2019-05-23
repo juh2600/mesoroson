@@ -30,7 +30,7 @@ class UMessage {
 		this.user = user;
 		this.channel = channel;
 		this.content = content;
-		if(process.env.NODE_ENV == 'debug') console.log(this);
+		if(process.env.NODE_ENV == 'debug') console.debug(this);
 	}
 }
 
