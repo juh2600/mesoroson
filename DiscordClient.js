@@ -92,6 +92,13 @@ class DiscordClient extends Participant {
 					this.parent.channels.push(name);
 			}
 			// We've changed our channel list. Rouse the troops.
+			this.parent.communities.forEach(c => {
+				for(var chan in this.parent.channels) {
+					chan =  this.parent.channels[chan];
+					if(!c.channels.includes(chan))
+						c.channels.push(chan);
+				}
+			});
 			this.parent.communities.forEach(c => c.reload());
 			this.parent.logger.info('Channels enrolled. Ready');
 		});
