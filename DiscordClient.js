@@ -34,7 +34,7 @@ class DiscordClient extends Participant {
 					this.logger.debug(d.channel);
 					var discordMessage = {
 						to: d.channel,
-						message: '**' + msg.user.realName + ':** ' + content
+						message: '' + msg.user.realName + ' > ' + content
 					};
 					//this.logger.debug('Sending message: ');
 					//this.logger.debug(discordMessage); // uhhh prepends [Discord] to the actual message ¯\_(ツ)_/¯
