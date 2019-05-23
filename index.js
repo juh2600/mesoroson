@@ -11,14 +11,15 @@ console.log('Starting ' + package.name + ' v' + package.version);
 logger = require('./logger').get('main');
 
 // Load classes and things
-const Community = require('./Community');
-const Participant = require('./Participant');
-const DiscordClient = require('./DiscordClient');
-const NullClient = require('./NullClient');
+const Community 	= require('./Community');
+const Participant 	= require('./Participant');
+const DiscordClient 	= require('./DiscordClient');
+const IRCClient 	= require('./IRCClient');
+const NullClient 	= require('./NullClient');
 
 // Load the definitions of participants and communities
-participants_config = require('./participants.json');
-communities_config = require('./communities.json');
+participants_config 	= require('./participants.json');
+communities_config 	= require('./communities.json');
 participants = {};
 communities = {};
 
