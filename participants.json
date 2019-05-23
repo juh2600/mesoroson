@@ -10,6 +10,13 @@
 	{
 		"name": "Chungus",
 		"type": "irc",
-		"auth": {}
+		"auth": {
+			"server": "irc.rizon.net",
+			"nick": "mesoroson",
+			"options": {
+				"stripColors": true,
+				"debug": false
+			}
+		}
 	}
 ]
