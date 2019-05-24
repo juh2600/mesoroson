@@ -16,7 +16,9 @@ class Participant {
 		let defaults = {
 			join_callback: function(community){},
 			refresh_channels: function(){},
-			reload: function(){}
+			reload: function(){},
+			blacklist: null,
+			whitelist: null
 		};
 		let o = Object.assign({}, defaults, options);
 		/**
@@ -78,6 +80,14 @@ class Participant {
 			if(process.env.NODE_ENV == 'debug') this.logger.debug('Propagating message from ' + message.source);
 			this.communities.forEach(c => c.distribute(message));
 		};
+		/**
+		 * If blacklist is not null, then the Participant should refrain from joining, reading, or writing using the channels contained therein. May be channel names or IDs.
+		 */
+		this.blacklist = o.blacklist;
+		/**
+		 * If whitelist is not null, then the Participant should join only and (if possible) all channels in the whitelist.
+		 */
+		this.whitelist = o.whitelist;
 	}
 }
 
