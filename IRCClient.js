@@ -29,10 +29,18 @@ class IRCClient extends Participant {
 					}
 				},
 				reload: function() {
+					if(!this.registered) {
+						this.logger.warn('Disregarding request to reload, because we are not registered.');
+						return;
+					}
 					this.logger.info('Reloading and joining new channels');
 					this.refresh_channels();
 			this.channels = ['booty']; // FIXME removv
 					var joined = Object.keys(this.mind.chans).map(function(c){c = c.split('#'); c.shift(); c = c.join('#'); return c;});
+					console.log('Joined: ');
+					console.log(joined)
+					console.log('Need to be in: ');
+					console.log(this.channels);
 					for(var c in this.channels) {
 						c =  this.channels[c];
 						if(!joined.includes(c))
@@ -44,9 +52,11 @@ class IRCClient extends Participant {
 				}
 			}
 		);
+		this.registered = false;
 		this.mind.on('registered', function(message) {
 			// Within this function, `this` refers to the mind
 			// probably
+			this.parent.registered = true;
 			this.parent.refresh_channels();
 			this.parent.reload();
 		});
