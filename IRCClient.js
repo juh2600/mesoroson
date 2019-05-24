@@ -1,5 +1,5 @@
 // set up logging for constructor
-var logger = require('./logger').get('IRCClient');
+var logger = require('./logger').get('IRC');
 const UMessage = require('./UMessage');
 const Participant = require('./Participant');
 const IRC = require('irc');
