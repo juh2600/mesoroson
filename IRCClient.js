@@ -41,12 +41,12 @@ class IRCClient extends Participant {
 					console.log(joined)
 					console.log('Need to be in: ');
 					console.log(this.channels);
+					var genCallback = function(string) {return function(u) {this.parent.logger.info('Joined #'+string);};};
 					for(var c in this.channels) {
 						c =  this.channels[c];
 						if(!joined.includes(c))
-							this.mind.join('#'+c,function(msg){
-								this.parent.logger.info('Joined #'+c);
-							});
+							this.logger.info('Joining #'+c+'...');
+							this.mind.join('#'+c,genCallback(c));
 					}
 					this.logger.info('Finished joining new channels.');
 				}
