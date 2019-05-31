@@ -5,25 +5,31 @@ const Participant = require('./Participant');
 const IRC = require('irc');
 
 class IRCClient extends Participant {
-	constructor(name, auth) {
+	constructor(name, auth, options={}, chanlist=null) {
 		super(
 			name,
 			'irc',
-			new IRC.Client(auth.server, auth.nick, auth.options),
+			new IRC.Client(auth.server, auth.nick, options),
 			function(msg) {
 				// This function must take in a UMessage from a Community and send it to all its endpoints (in the direction of users, not Communities).
-				this.logger.debug(JSON.stringify(msg));
+				this.logger.silly(JSON.stringify(msg));
 				if((msg.source.participant == this.name) && (msg.source.channel == msg.channel)) return;
+				if(this.channels.includes(msg.channel))
 				this.mind.send('PRIVMSG','#'+msg.channel,msg.user.realName+' > '+msg.content);
+				else this.logger.debug('Ignoring message to #'+msg.channel+' because we don\'t operate there');
 			},
 			{
 				refresh_channels: function() {
+					if(this.chanlist != null && this.chanlist.type === 'whitelist') {
+						this.channels = this.chanlist.list;
+						return;
+					}
 					this.channels = [];
 					for(var C in this.communities) {
 						C = this.communities[C];
 						for(var c in C.channels) {
 							c = C.channels[c];
-							if(!this.channels.includes(c))
+							if(!this.channels.includes(c) && !(this.chanlist != null && this.chanlist.type === 'blacklist' && this.chanlist.list.includes(c)))
 								this.channels.push(c);
 						}
 					}
@@ -35,7 +41,7 @@ class IRCClient extends Participant {
 					}
 					this.logger.info('Reloading and joining new channels');
 					this.refresh_channels();
-			this.channels = ['booty']; // FIXME removv
+//			this.channels = ['booty']; // FIXME removv
 					var joined = Object.keys(this.mind.chans).map(function(c){c = c.split('#'); c.shift(); c = c.join('#'); return c;});
 					console.log('Joined: ');
 					console.log(joined)
@@ -52,6 +58,10 @@ class IRCClient extends Participant {
 				}
 			}
 		);
+		if(chanlist!=null) {
+			this.logger.debug('Received not-null black or whitelist');
+			this.chanlist = chanlist;
+		}
 		this.registered = false;
 		this.mind.on('registered', function(message) {
 			// Within this function, `this` refers to the mind

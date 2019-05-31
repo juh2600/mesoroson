@@ -36,7 +36,7 @@ for(var p in participants_config) {
 			break;
 		case 'irc':
 			logger.info('Constructing IRCClient: '+p.name);
-			participants[p.name] = new IRCClient(p.name, p.auth);
+			participants[p.name] = new IRCClient(p.name, p.auth, p.options, p.chanlist);
 			logger.info('Constructed '+p.name);
 			break;
 		case null:
