@@ -12,11 +12,35 @@
 		"type": "irc",
 		"auth": {
 			"server": "irc.rizon.net",
-			"nick": "mesoroson",
-			"options": {
-				"stripColors": true,
-				"debug": false
-			}
+			"nick": "mesoroson"
+		},
+		"options": {
+			"stripColors": true,
+			"debug": false
+		},
+		"chanlist": {
+			"type":"whitelist",
+			"list": [
+				"booty"
+			]
+		}
+	},
+	{
+		"name": "Lump",
+		"type": "irc",
+		"auth": {
+			"server": "garfielf.net",
+			"nick": "mesoroson"
+		},
+		"options": {
+			"stripColors": true,
+			"debug": false
+		},
+		"chanlist": {
+			"type": "blacklist",
+			"list": [
+				"welcome-xd"
+			]
 		}
 	}
 ]
